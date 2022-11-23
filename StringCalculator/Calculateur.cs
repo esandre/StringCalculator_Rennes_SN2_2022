@@ -2,6 +2,12 @@
 {
     public static class Calculateur
     {
-        public static int Add(string chaîne) => 0;
+        public static uint Add(string chaîne)
+        {
+            return chaîne
+                .Split(',')
+                .Select(uint.Parse)
+                .Aggregate((previous, element) => previous + element);
+        }
     }
 }
