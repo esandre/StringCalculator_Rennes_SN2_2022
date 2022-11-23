@@ -13,13 +13,14 @@
                 return elementsAsString
                     .AsParallel()
                     .Select(element => ParseWithChecks(element, elementsAsString))
+                    .Where(nombre => nombre <= 1000)
                     .Sum();
             } 
             catch (AggregateException ex)
             {
                 if (ex.InnerExceptions.Count == 1)
                     throw ex.InnerExceptions[0];
-                else throw;
+                throw;
             }
         }
 

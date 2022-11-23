@@ -1,4 +1,5 @@
 using StringCalculator.Test.Utilities;
+using System.Threading.Channels;
 
 namespace StringCalculator.Test
 {
@@ -33,9 +34,7 @@ namespace StringCalculator.Test
             // ALORS on obtient un entier x+y
             Assert.Equal<uint>(11, résultat);
         }
-
-        // Si des nombres négatifs sont présents une exception est lancée, elle contient les nombres et leurs positions.
-
+        
         [Fact]
         public void NombresNegatif()
         {
@@ -77,6 +76,22 @@ namespace StringCalculator.Test
             // ET chacune contient la position et le nombre fautif
             Assert.Contains(exceptionsFilles, exception => exception.Position == 1 && exception.NombreFautif == "-1");
             Assert.Contains(exceptionsFilles, exception => exception.Position == 2 && exception.NombreFautif == "-2");
+        }
+        
+        [Fact]
+        public void IgnorerPlusDe1000()
+        {
+            // ETANT DONNE une chaine de la forme "x,y,z" où un élément est supérieur à 1000
+            const string chaîne = "1,1001,1000";
+
+            // QUAND on l'envoie à Add
+            var résultat = Calculateur.Add(chaîne);
+
+            // ALORS le résultat est le même que le résultat d'une même chaîne sans cet élément
+            var chaîneSansGrandNombre = "1, 1000";
+            var résultatSansGrandNombre = Calculateur.Add(chaîneSansGrandNombre);
+
+            Assert.Equal(résultatSansGrandNombre, résultat);
         }
     }
 }
