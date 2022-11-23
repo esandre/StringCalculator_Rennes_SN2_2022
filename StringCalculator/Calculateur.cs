@@ -7,7 +7,7 @@
             return chaîne
                 .Split(',')
                 .Select(uint.Parse)
-                .Aggregate((previous, element) => previous + element);
+                .Sum();
         }
     }
 }

@@ -5,25 +5,22 @@ namespace StringCalculator.Test
     public class CalculateurTest
     {
         private static readonly Random Random = new Random();
-
-        private static IEnumerable<uint> CasACombiner 
-            => new uint[] { 0, 1, uint.MaxValue / 2, Random.NextUint(uint.MaxValue / 2) };
-
-        public static IEnumerable<object[]> CasTests2Nombres 
-            => new CartesianProduct(CasACombiner, CasACombiner);
+        
+        public static IEnumerable<object[]> CasTestsNNombres 
+            => new AdditionTestCaseGenerator(new Random()).Generate();
 
         [Theory]
-        [MemberData(nameof(CasTests2Nombres))]
-        public void Test2Nombres(uint x, uint y)
+        [MemberData(nameof(CasTestsNNombres))]
+        public void TestNNombres(params uint[] parameters)
         {
-            // ETANT DONNE une chaîne "x, y"
-            var chaîne = $"{x},{y}";
+            // ETANT DONNE une chaîne "x, y, ..."
+            var chaîne = string.Join(',', parameters);
 
             // QUAND on l'envoie à Add
             var résultat = Calculateur.Add(chaîne);
 
-            // ALORS on obtient un entier x+y
-            Assert.Equal(x + y, résultat);
+            // ALORS on obtient un entier x+y+...
+            Assert.Equal(parameters.Sum(), résultat);
         }
 
         [Fact]
