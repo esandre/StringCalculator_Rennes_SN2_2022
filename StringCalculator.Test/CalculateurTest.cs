@@ -93,5 +93,25 @@ namespace StringCalculator.Test
 
             Assert.Equal(résultatSansGrandNombre, résultat);
         }
+
+        [Theory]
+        [InlineData("🎄")]
+        [InlineData("🦃")]
+        [InlineData("/")]
+        [InlineData("//")]
+        public void ChangementDélimitateur(string délimitateur)
+        {
+            // ETANT DONNE une ligne //<délimitateur> avant tout nombre
+            var définitionDélimitateur = $"//{délimitateur}" + Environment.NewLine;
+            var chaîne = $"1{délimitateur}1";
+
+            // QUAND on envoie la ligne précédente puis 1<délimitateur>1 à Add
+            var résultat = Calculateur.Add(définitionDélimitateur + chaîne);
+
+            // ALORS on obtient le même résultat que 1,1
+            var résultatDélimitateurVanilla = Calculateur.Add("1,1");
+
+            Assert.Equal(résultatDélimitateurVanilla, résultat);
+        }
     }
 }

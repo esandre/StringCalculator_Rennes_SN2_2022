@@ -4,9 +4,19 @@
     {
         public static uint Add(string chaîne)
         {
+            var délimitateur = ",";
+
+            if (chaîne.StartsWith("//"))
+            {
+                var lignes = chaîne.Split(Environment.NewLine);
+
+                délimitateur = new string(lignes.First().Skip(2).ToArray());
+                chaîne = string.Join(Environment.NewLine, lignes.Skip(1));
+            }
+
             var elementsAsString = chaîne
                 .Replace(Environment.NewLine, string.Empty)
-                .Split(',');
+                .Split(délimitateur);
 
             try
             {
