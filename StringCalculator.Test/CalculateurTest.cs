@@ -1,5 +1,5 @@
+using System.Reflection;
 using StringCalculator.Test.Utilities;
-using System.Threading.Channels;
 
 namespace StringCalculator.Test
 {
@@ -16,7 +16,17 @@ namespace StringCalculator.Test
             var chaîne = string.Join(',', parameters);
 
             // QUAND on l'envoie à Add
-            var résultat = Calculateur.Add(chaîne);
+            var typeCalculateur = typeof(Calculateur);
+            var résultat = typeCalculateur.GetMethod("Add")?.Invoke(null, new object?[] { chaîne });
+            //var résultat = Calculateur.Add(chaîne);
+
+            var stringAttributeContent = typeCalculateur
+                .GetCustomAttributes(typeof(StringAttribute))
+                .OfType<StringAttribute>()
+                .Single()
+                .Value;
+
+            Assert.Equal("Test", stringAttributeContent);
 
             // ALORS on obtient un entier x+y+...
             Assert.Equal(parameters.Sum(), résultat);

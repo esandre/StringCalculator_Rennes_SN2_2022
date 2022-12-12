@@ -1,5 +1,6 @@
 ﻿namespace StringCalculator
 {
+    [String("Test")]
     public static class Calculateur
     {
         public static uint Add(string chaîne)
